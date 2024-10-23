@@ -36,20 +36,17 @@ local lockedRoomThreshold = 0
 local roomsSinceLastLocked = 0 
 
 function calculateLockedRoomChance()
-	-- Get the appropriate weight based on the number of rooms passed
-	local lockedRoomWeight = 5 -- Default weight
+	local lockedRoomWeight = 5
 	for _, room in ipairs(lockedRoomWeights) do
 		if roomNumber >= room.count then
 			lockedRoomWeight = room.weight
 		end
 	end
 
-	-- If we've passed the threshold, guarantee a locked room
 	if roomsSinceLastLocked >= lockedRoomThreshold then
 		return true
 	end
 
-	-- Otherwise, return a probability based on the weight
 	local randomChance = math.random(1, 100)
 
 	return randomChance <= lockedRoomWeight
@@ -90,7 +87,6 @@ function spawnRandomFurnitureInRoom(room)
 				furnitureArea.Transparency = 1
 
 				if success then
-					-- Track how many of this type of furniture was placed in this room
 					if not roomFurnitureCounts[room.Name][randomFurniture] then
 						roomFurnitureCounts[room.Name][randomFurniture] = 0
 					end
@@ -122,7 +118,7 @@ function selectRoomType()
 			cumulativeWeight = cumulativeWeight + room.weight
 			--print("rand:", rand, "cumulativeWeight:", cumulativeWeight, "roomType:", roomType)
 			if rand <= cumulativeWeight then
-				return categoryName, roomName -- Return the selected category and room
+				return categoryName, roomName 
 			end
 		end
 	end
@@ -311,10 +307,9 @@ function adjustMonsterLevelWeights()
 	local totalWeight = 0
 	
 	for _, monster in ipairs(monsterLevels) do
-		-- Increase weight for higher levels as player progresses
 		if monsterRoomCount > 15 then
 			if monster.level == 4 then
-				monster.weight = monster.weight + 10 -- higher level appears more often
+				monster.weight = monster.weight + 10 
 			elseif monster.level == 3 then
 				monster.weight = monster.weight + 5
 			end
